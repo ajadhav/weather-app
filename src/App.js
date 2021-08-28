@@ -128,7 +128,7 @@ const App = () => {
                 onClick={() => {
                   setUnits('imperial');
                 }}
-                class='btn btn-sm btn-light'
+                className='btn btn-sm btn-light'
               >
                 °F
               </button>
@@ -136,7 +136,7 @@ const App = () => {
                 onClick={() => {
                   setUnits('metric');
                 }}
-                class='btn btn-sm btn-dark'
+                className='btn btn-sm btn-dark'
               >
                 °C
               </button>

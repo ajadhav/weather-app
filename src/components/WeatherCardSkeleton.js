@@ -5,12 +5,18 @@ const WeatherCardSkeleton = () => {
     <div className='card' style={{ borderRadius: '1.25rem' }}>
       <div className='card-body p-4'>
         <div className='d-flex'>
-          <h6 className='placeholder-glow flex-grow-1'></h6>
-          <h6 className='placeholder-glow'></h6>
+          <h6 className='placeholder-glow flex-grow-1'>
+            <span class='placeholder col-6'></span>
+          </h6>
+          <h6 className='placeholder-glow'>
+            <span class='placeholder col-6'></span>
+          </h6>
         </div>
 
         <div className='d-flex flex-column text-center mt-5 mb-4'>
-          <h6 className='placeholder-glow display-4 mb-0 font-weight-bold'></h6>
+          <h6 className='placeholder-glow display-4 mb-0 font-weight-bold'>
+            <span class='placeholder col-6'></span>
+          </h6>
           <span className='placeholder small'></span>
         </div>
 
