@@ -6,7 +6,7 @@ import Cities from './components/Cities';
 import WeatherCardSkeleton from './components/WeatherCardSkeleton';
 import WeatherCard from './components/WeatherCard';
 import './App.css';
-
+//huehue
 function fetchReducer(state, action) {
   switch (action.type) {
     case 'FETCH_START':
