@@ -37,7 +37,7 @@ const WeatherCard = ({ weatherInfo, units }) => {
           </div>
           <div>
             <img
-              src={`http://openweathermap.org/img/wn/${icon}@2x.png`}
+              src={`https://openweathermap.org/img/wn/${icon}@2x.png`}
               alt=''
             ></img>
           </div>

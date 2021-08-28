@@ -52,9 +52,9 @@ async function fetchWeatherData(query, dispatch, cancelToken) {
   if (query) {
     dispatch({ type: 'FETCH_START' });
     try {
-      console.log(query);
+      // console.log(query);
       const res = await getData(`/weather?q=${query}`, cancelToken);
-      console.log(res);
+      // console.log(res);
       const weatherInfo = {
         name: res.data.name,
         condition: res.data.weather[0].main,
@@ -116,7 +116,7 @@ const App = () => {
             <SearchBar
               city={selectedCity}
               onChangeCity={(e) => {
-                console.log(e);
+                // console.log(e);
                 if (e.target.value === '') {
                   dispatch({ type: 'RESET' });
                 }
