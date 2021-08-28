@@ -8,7 +8,7 @@ const WeatherCard = ({ weatherInfo, units }) => {
     return (((fahrenheit - 32) * 5) / 9).toFixed(1);
   };
   const formatted_temp =
-    units === 'metric' ? toCelsius(temp) + '°C' : temp + '°F';
+    units === 'metric' ? toCelsius(temp) + '°C' : temp.toFixed(1) + '°F';
   return (
     <div className='card' style={{ borderRadius: '1.25rem' }}>
       <div className='card-body p-4'>
