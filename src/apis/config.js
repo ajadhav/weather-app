@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 export const API_KEY = process.env.REACT_APP_OPENWEATHER_API_KEY;
-export const API_BASE_URL = 'http://api.openweathermap.org/data/2.5';
+export const API_BASE_URL = 'https://api.openweathermap.org/data/2.5';
 
 // call current weather data for one location
 // by city name
