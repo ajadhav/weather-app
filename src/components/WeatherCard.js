@@ -5,10 +5,19 @@ const WeatherCard = ({ weatherInfo, units }) => {
     weatherInfo;
   const date = new Date(dt * 1000);
   const toCelsius = (fahrenheit) => {
-    return (((fahrenheit - 32) * 5) / 9).toFixed(1);
+    return ((fahrenheit - 32) * 5) / 9;
   };
-  const formatted_temp =
-    units === 'metric' ? toCelsius(temp) + '°C' : temp.toFixed(1) + '°F';
+  const format_temp = (temp, units) => {
+    const unit = units === 'metric' ? '°C' : '°F';
+    const ftemp =
+      temp == null
+        ? temp
+        : units === 'metric'
+        ? toCelsius(temp).toFixed(1)
+        : temp.toFixed(1);
+    return ftemp + unit;
+  };
+  const formatted_temp = format_temp(temp, units);
   return (
     <div className='card' style={{ borderRadius: '1.25rem' }}>
       <div className='card-body p-4'>
