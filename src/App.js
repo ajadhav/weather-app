@@ -6,7 +6,18 @@ import Cities from './components/Cities';
 import WeatherCardSkeleton from './components/WeatherCardSkeleton';
 import WeatherCard from './components/WeatherCard';
 import './App.css';
-//huehue
+import UnitToggle from './components/UnitToggle';
+
+const initialState = {
+  lat: null,
+  lon: null,
+  timezone: '',
+  timezone_offset: null,
+  current: null,
+  hourly: [],
+  daily: [],
+};
+
 function fetchReducer(state, action) {
   switch (action.type) {
     case 'FETCH_START':
@@ -18,9 +29,9 @@ function fetchReducer(state, action) {
     case 'FETCH_SUCCESS':
       return {
         ...state,
+        weatherData: action.payload,
         isLoading: false,
         isError: false,
-        weatherData: action.payload,
       };
     case 'FETCH_FAILURE':
       return {
@@ -30,16 +41,7 @@ function fetchReducer(state, action) {
       };
     case 'RESET':
       return {
-        weatherData: {
-          name: '',
-          condition: '',
-          dt: null,
-          timezone: null,
-          humidity: null,
-          icon: '',
-          temp: null,
-          windspd: null,
-        },
+        weatherData: initialState,
         isLoading: false,
         isError: false,
       };
@@ -52,20 +54,15 @@ async function fetchWeatherData(query, dispatch, cancelToken) {
   if (query) {
     dispatch({ type: 'FETCH_START' });
     try {
-      // console.log(query);
-      const res = await getData(`/weather?q=${query}`, cancelToken);
-      // console.log(res);
-      const weatherInfo = {
-        name: res.data.name,
-        condition: res.data.weather[0].main,
-        dt: res.data.dt,
-        timezone: res.data.timezone,
-        humidity: res.data.main.humidity,
-        icon: res.data.weather[0].icon,
-        temp: res.data.main.temp,
-        windspd: res.data.wind.speed,
-      };
-
+      const cityInfo = await getData(`/weather?q=${query}`, cancelToken);
+      // console.log(cityInfo);
+      const { lat, lon } = cityInfo.coord;
+      const data = await getData(
+        `/onecall?lat=${lat}&lon=${lon}&exclude=minutely,alerts`
+      );
+      // console.log(data);
+      const weatherInfo = data;
+      weatherInfo.current.name = cityInfo.name;
       dispatch({ type: 'FETCH_SUCCESS', payload: weatherInfo });
       //setSelectedCity(res.name);
     } catch (err) {
@@ -81,19 +78,11 @@ const App = () => {
   const cities = ['New York', 'Detroit', 'Chicago', 'Los Angeles', 'Seattle'];
   const [selectedCity, setSelectedCity] = useState('');
   const [units, setUnits] = useState('imperial');
+
   const [{ weatherData, isError, isLoading }, dispatch] = useReducer(
     fetchReducer,
     {
-      weatherData: {
-        name: '',
-        condition: '',
-        dt: null,
-        timezone: null,
-        humidity: null,
-        icon: '',
-        temp: null,
-        windspd: null,
-      },
+      weatherData: initialState,
       isLoading: false,
       isError: false,
     }
@@ -107,40 +96,24 @@ const App = () => {
     return () => cancel('No longer latest query') || clearTimeout(timeOutId);
   }, [selectedCity]);
 
+  const onChangeCity = (e) => {
+    if (e.target.value === '') {
+      dispatch({ type: 'RESET' });
+    }
+    setSelectedCity(e.target.value);
+  };
+
   return (
     <div className='App'>
       <div className='container py-5 h-100'>
         <div className='row d-flex justify-content-center align-items-center h-100'>
           <div className='position-relative col-md-8 col-lg-6 col-xl-4'>
             <h1 className='text-center'>Weather App</h1>
-            <SearchBar
-              city={selectedCity}
-              onChangeCity={(e) => {
-                // console.log(e);
-                if (e.target.value === '') {
-                  dispatch({ type: 'RESET' });
-                }
-                setSelectedCity(e.target.value);
-              }}
+            <SearchBar city={selectedCity} onChangeCity={onChangeCity} />
+            <UnitToggle
+              handleImperial={() => setUnits('imperial')}
+              handleMetric={() => setUnits('metric')}
             />
-            <div className='my-3 d-flex flex-wrap justify-content-center align-items-stretch align-self-stretch'>
-              <button
-                onClick={() => {
-                  setUnits('imperial');
-                }}
-                className='btn btn-sm btn-light'
-              >
-                °F
-              </button>
-              <button
-                onClick={() => {
-                  setUnits('metric');
-                }}
-                className='btn btn-sm btn-dark'
-              >
-                °C
-              </button>
-            </div>
             <Cities
               cityList={cities}
               onSelection={(e) => {
@@ -157,7 +130,10 @@ const App = () => {
             {isLoading ? (
               <WeatherCardSkeleton />
             ) : selectedCity !== '' && !isError ? (
-              <WeatherCard units={units} weatherInfo={weatherData} />
+              <>
+                <WeatherCard data={weatherData} units={units} />
+                {/* <ChartInst chartContainer={chartContainer} /> */}
+              </>
             ) : (
               <div></div>
             )}

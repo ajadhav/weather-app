@@ -3,6 +3,7 @@ import React from 'react';
 const Cities = (props) => {
   const cityList = props.cityList.map((city) => (
     <button
+      key={city}
       onClick={() => props.onSelection(city)}
       className='btn btn-light my-1 mx-1'
     >
