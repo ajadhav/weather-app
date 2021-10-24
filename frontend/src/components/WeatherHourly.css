@@ -1,0 +1,22 @@
+.hf__items {
+  overflow-x: auto;
+  flex-shrink: 0;
+}
+
+.hf__items::-webkit-scrollbar {
+  display: none;
+}
+
+.hf__item {
+  object-fit: contain;
+  width: 50px;
+  max-height: 100px;
+  margin-right: 10px;
+  transition: transform 450ms;
+  text-align: center;
+}
+
+.hf__item:hover {
+  transform: scale(1.08);
+  opacity: 1;
+}
