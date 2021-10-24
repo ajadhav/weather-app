@@ -34,7 +34,7 @@ export default function Autocomplete({ changeCity, changeLatLon }) {
     if (query) {
       try {
         res = await axios.get(`/api/suggestions?name=${query}`, cancelToken);
-        console.log(res);
+        // console.log(res);
       } catch (err) {
         console.error(err);
         axios.isCancel(err);

@@ -17,7 +17,7 @@ const SearchBar = ({
         <li
           key={index}
           onClick={(e) => {
-            console.log(e);
+            // console.log(e);
             setSelectedCity(item.name);
             setSearchTerm('');
             hideSuggestions();
