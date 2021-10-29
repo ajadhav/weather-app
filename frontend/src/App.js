@@ -82,6 +82,12 @@ async function fetchWeatherData(query, dispatch, cancelToken) {
       res = await axios.get('/api/weather', { params }, cancelToken);
       let weatherInfo = res.data;
       weatherInfo.current.name = query.name;
+      weatherInfo.current.sunset = new Date(
+        weatherInfo.current.sunset * 1000
+      ).toLocaleTimeString([], { timeStyle: 'short' });
+      weatherInfo.current.sunrise = new Date(
+        weatherInfo.current.sunrise * 1000
+      ).toLocaleTimeString([], { timeStyle: 'short' });
       dispatch({ type: 'FETCH_SUCCESS', payload: weatherInfo });
 
       // else {
@@ -181,21 +187,21 @@ const App = () => {
     setSelectedCoord({ lat: null, lon: null });
   };
 
-  const onChangeLatLon = (e) => {
-    dispatch({
-      type: 'SEED',
-      payload: {
-        lat: e.coord.lat,
-        lon: e.coord.lon,
-        name: e.name,
-        timezone: '',
-        timezone_offset: null,
-        current: null,
-        hourly: [],
-        daily: [],
-      },
-    });
-  };
+  // const onChangeLatLon = (e) => {
+  //   dispatch({
+  //     type: 'SEED',
+  //     payload: {
+  //       lat: e.coord.lat,
+  //       lon: e.coord.lon,
+  //       name: e.name,
+  //       timezone: '',
+  //       timezone_offset: null,
+  //       current: null,
+  //       hourly: [],
+  //       daily: [],
+  //     },
+  //   });
+  // };
 
   // const onChangeQuery = (e) => {
   //   if (e.target.value === '') {
@@ -224,7 +230,7 @@ const App = () => {
             /> */}
             <Autocomplete
               changeCity={onChangeCity}
-              changeLatLon={onChangeLatLon}
+              // changeLatLon={onChangeLatLon}
             />
             <UnitToggle
               handleImperial={() => setUnits('imperial')}

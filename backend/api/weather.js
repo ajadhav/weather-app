@@ -47,6 +47,7 @@ class Weather {
   getWeatherDataFromCoord = async (coord) => {
     const { lat, lon } = coord;
     const url = `${API_BASE_URL}/onecall?lat=${lat}&lon=${lon}&exclude=minutely,alerts&units=${UNITS}&appid=${process.env.REACT_APP_OPENWEATHER_API_KEY}`;
+    // console.log(url);
     return (await axios(url)).data;
   };
   // getWeatherDataFromMongo = async (cityName) => {

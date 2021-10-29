@@ -71,23 +71,26 @@ const ChartInst = ({ hourlyData }) => {
   useEffect(() => {
     const buildChart = () => {
       const cfg = {
+        type: 'line',
         data: {
           datasets: [
             {
               type: 'line',
               label: 'temp',
               data: hourlyTemp,
-              borderColor: 'rgb(39,245,144)',
-              // yAxisID: 'id1',
+              yAxisID: 'TempAxis',
+              fill: false,
+              borderColor: 'rgb(0,158,115)',
+              tension: 0.4,
             },
             {
               type: 'bar',
               label: 'rain',
               data: hourlyRain,
-              fill: true,
-              borderColor: 'rgb(39,76,245)',
-              backgroundColor: 'rgba(39,76,245,0.5)',
-              // yAxisID: 'id2',
+              yAxisID: 'RainAxis',
+              // fill: true,
+              // borderColor: 'rgb(39,76,245)',
+              backgroundColor: 'rgba(39,76,245,0.3)',
             },
           ],
           labels: hourlyData?.map((hour) => {
@@ -102,21 +105,54 @@ const ChartInst = ({ hourlyData }) => {
         options: {
           responsive: true,
           scales: {
-            yAxes: [
-              {
-                position: 'left',
-                type: 'linear',
-                scaleLabel: { display: true, labelString: '°' },
-                id: 'id1',
+            TempAxis: {
+              id: 'TempAxis',
+              type: 'linear',
+              position: 'left',
+              grid: {
+                display: true,
+                drawBorder: false,
+                drawOnChartArea: false,
               },
-              {
-                position: 'right',
-                type: 'linear',
-                scaleLabel: { display: true, labelString: 'mm' },
-                grid: { drawOnChartArea: false },
-                id: 'id2',
+              // suggestedMin: Math.min(...hourlyTemp),
+              // suggestedMax: Math.max(...hourlyTemp),
+              title: {
+                text: '°',
               },
-            ],
+              // scaleLabel: { display: true, labelString: '°' },
+            },
+            RainAxis: {
+              id: 'RainAxis',
+              position: 'right',
+              grid: {
+                display: false,
+                drawBorder: false,
+                drawOnChartArea: false,
+              },
+              ticks: {
+                display: false,
+                min: 0,
+              },
+              // scaleLabel: { display: true, labelString: 'mm' },
+            },
+          },
+          plugins: {
+            tooltip: {
+              callbacks: {
+                label: (context) => {
+                  let label = context.dataset.label || '';
+                  if (context.datasetIndex === 1 && context.parsed.y !== null) {
+                    label += ' ' + context.parsed.y + ' mm';
+                  } else if (
+                    context.datasetIndex === 0 &&
+                    context.parsed.y !== null
+                  ) {
+                    label += ' ' + context.parsed.y + '°';
+                  }
+                  return label;
+                },
+              },
+            },
           },
         },
       };

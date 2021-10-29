@@ -9,8 +9,8 @@ export const ConditionItem = ({ value, icon }) => {
 
 export const ConditionList = ({ current }) => {
   const defaults = {
-    // sunset: 'far fa-sunset fa-fw',
-    // sunrise: 'far fa-sunrise fa-fw',
+    sunrise: 'bi bi-sunrise fa-solid fa-fw',
+    sunset: 'bi bi-sunset fa-solid fa-fw',
     humidity: 'fas fa-tint fa-fw',
     wind_speed: 'fas fa-wind fa-fw',
     // dew_point: 'fas fa-dewpoint',
