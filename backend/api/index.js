@@ -29,6 +29,7 @@ router.get('/suggestions', async (req, res) => {
 });
 
 router.get('/weather', async (req, res) => {
+  //console.log(req.query);
   let coord = { lat: req.query?.lat, lon: req.query?.lon };
   let cityname = req.query?.name?.toLocaleLowerCase();
   if (coord.lat && coord.lon) {

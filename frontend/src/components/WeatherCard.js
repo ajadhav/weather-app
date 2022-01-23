@@ -3,18 +3,34 @@ import Body from './Body';
 import Footer from './Footer';
 import { formatData } from '../utils';
 import './WeatherCard.css';
+import { useWeather } from './weather.context';
+import WeatherCardSkeleton from './WeatherCardSkeleton';
 
-const WeatherCard = ({ data, units }) => {
-  const weatherData = formatData(data, units);
+const WeatherCard = () => {
+  const {
+    state: { weatherData, units, loading, error },
+  } = useWeather();
+  const formattedData = formatData(weatherData, units);
   return (
-    <div className='card' style={{ borderRadius: '1.25rem' }}>
-      <Header
-        name={weatherData?.current?.name}
-        dateTime={weatherData?.current?.dt}
-      />
-      <Body current={weatherData?.current} hourly={weatherData?.hourly} />
-      <Footer daily={weatherData?.daily} />
-    </div>
+    <>
+      {loading ? (
+        <WeatherCardSkeleton />
+      ) : weatherData.name !== '' && !error ? (
+        <div className='card' style={{ borderRadius: '1.25rem' }}>
+          <Header
+            name={formattedData?.current?.name}
+            dateTime={formattedData?.current?.dt}
+          />
+          <Body
+            current={formattedData?.current}
+            hourly={formattedData?.hourly}
+          />
+          <Footer daily={formattedData?.daily} />
+        </div>
+      ) : (
+        <div></div>
+      )}
+    </>
   );
 };
 

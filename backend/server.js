@@ -1,13 +1,16 @@
 const express = require('express');
 const createError = require('http-errors');
 const path = require('path');
+const expressStaticGzip = require('express-static-gzip');
 const app = express();
 const port = process.env.PORT || 3001;
+const helmet = require('helmet');
 require('dotenv').config({ path: './../.env' });
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 const api = require('./api');
+app.use(helmet());
 app.use('/api', api);
 
 // // catch 404 and forward to error handler
@@ -27,7 +30,15 @@ app.use('/api', api);
 // });
 
 // Serve static files from the React frontend app
-app.use(express.static(path.join(__dirname, '../frontend/build')));
+const buildPath = path.join(__dirname, '../frontend/build');
+app.use(
+  '/',
+  expressStaticGzip(buildPath, {
+    enableBrotli: true,
+    orderPreference: ['br', 'gz'],
+  })
+);
+// app.use(express.static(path.join(__dirname, '../frontend/build')));
 // Anything that doesn't match the above, send back index.html
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname + '/../frontend/build/index.html'));

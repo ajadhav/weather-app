@@ -1,0 +1,64 @@
+{
+    "cities": [
+        {
+            "id": 5128581,
+            "name": "New York",
+            "state": "NY",
+            "country": "US",
+            "coord": {
+                "lon": -74.005966,
+                "lat": 40.714272
+            }
+        },    
+        {
+            "id": 4560349,
+            "name": "Philadelphia",
+            "state": "PA",
+            "country": "US",
+            "coord": {
+                "lon": -75.163788,
+                "lat": 39.952339
+            }
+        },
+        {
+            "id": 4990729,
+            "name": "Detroit",
+            "state": "MI",
+            "country": "US",
+            "coord": {
+                "lon": -83.045753,
+                "lat": 42.331429
+            }
+        },    
+        {
+            "id": 4887398,
+            "name": "Chicago",
+            "state": "IL",
+            "country": "US",
+            "coord": {
+                "lon": -87.650047,
+                "lat": 41.850029
+            }
+        },    
+        {
+            "id": 5368361,
+            "name": "Los Angeles",
+            "state": "CA",
+            "country": "US",
+            "coord": {
+                "lon": -118.243683,
+                "lat": 34.052231
+            }
+        },    
+        {
+            "id": 5809844,
+            "name": "Seattle",
+            "state": "WA",
+            "country": "US",
+            "coord": {
+                "lon": -122.332069,
+                "lat": 47.606209
+            }
+        } 
+    ]
+}

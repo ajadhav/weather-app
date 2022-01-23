@@ -1,12 +1,76 @@
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import './Autocomplete.css';
-export default function Autocomplete({ changeCity, changeLatLon }) {
+
+import { updateWeather, useWeather } from './weather.context';
+import { SET_LOCATION } from './weather.actions';
+
+export default function Autocomplete({ changeLatLon }) {
   const [state, setState] = useState({
     suggestionIdx: 0,
     suggestions: [],
     query: '',
   });
+
+  const { dispatch } = useWeather();
+
+  const changeCity = (e) => {
+    // setSelectedCity(e.name);
+    // setSelectedCoord({ lat: e.lat ?? null, lon: e.lon ?? null });
+    const query = {
+      name: e.name,
+      lat: e.lat,
+      lon: e.lon,
+    };
+    dispatch({
+      type: SET_LOCATION,
+      payload: query,
+    });
+    updateWeather(query, dispatch, null);
+  };
+  // const useThrottle = (fn, timer = 1000) => {
+  //   const [timeoutId, setTimeoutId] = useState(null);
+  //   return (...args) => {
+  //     if (timeoutId) {
+  //       return;
+  //     }
+  //     setTimeoutId(
+  //       setTimeout(() => {
+  //         fn(...args);
+  //         console.log('Using throttle', ...args);
+  //         clearTimeout(timeoutId);
+  //         setTimeoutId(null);
+  //       }, timer)
+  //     );
+  //   };
+  // };
+
+  // const useDebounce = (fn, timer = 1000) => {
+  //   const [timeoutId, setTimeoutId] = useState(null);
+  //   return (...args) => {
+  //     if (timeoutId) {
+  //       clearTimeout(timeoutId);
+  //       setTimeoutId(null);
+  //     }
+  //     setTimeoutId(
+  //       setTimeout(() => {
+  //         fn(...args);
+  //         console.log('Using debounce', ...args);
+  //         clearTimeout(timeoutId);
+  //         setTimeoutId(null);
+  //       }, timer)
+  //     );
+  //   };
+  // };
+
+  // const getSuggestions = (query, token) =>
+  //   getData(query, null).then((res) => {
+  //     setState({ ...state, suggestions: res });
+  //   });
+  // const debouncedFn = useDebounce(getSuggestions);
+  // const throttledFn = useThrottle(getSuggestions);
+  // const memoizedDebounce = useCallback(debouncedFn, [debouncedFn]);
+  // const memoizedThrottle = useCallback(throttledFn, [throttledFn]);
 
   useEffect(() => {
     const { cancel, token } = axios.CancelToken.source();
@@ -71,7 +135,9 @@ export default function Autocomplete({ changeCity, changeLatLon }) {
   };
 
   const onChange = (e) => {
-    setState({ ...state, query: e.currentTarget.value });
+    let q = e.currentTarget.value;
+    setState({ ...state, query: q });
+    // e.currentTarget.value > 3 ? memoizedDebounce(q) : memoizedThrottle(q);
   };
 
   const onClick = (e) => {
@@ -101,21 +167,6 @@ export default function Autocomplete({ changeCity, changeLatLon }) {
       setState({ ...state, suggestionIdx: state.suggestionIdx + 1 });
     }
   };
-
-  //   const Suggestion = ({ suggestion, onClick }, index) => {
-  //     return (
-  //       <li key={index} onClick={onClick}>
-  //         <a href=''>{suggestion.name}</a>
-  //       </li>
-  //     );
-  //   };
-
-  //   const Suggestions = (suggestions) =>
-  //     suggestions.map((suggestion, index) => {
-  //       return (
-  //         <Suggestion key={index} suggestion={suggestion} onClick={onClick} />
-  //       );
-  //     });
 
   const SearchBar = ({ onChange, onKeyDown, placeholder, query }) => {
     return (
