@@ -4,13 +4,26 @@ const path = require('path');
 const expressStaticGzip = require('express-static-gzip');
 const app = express();
 const port = process.env.PORT || 3001;
-const helmet = require('helmet');
+// const helmet = require('helmet');
 require('dotenv').config({ path: './../.env' });
+// app.use(
+//   helmet({
+//     contentSecurityPolicy: {
+//       directives: {
+//         'script-src': [
+//           "'self'",
+//           "'unsafe-inline'",
+//           'https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js',
+//           'https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.6.0/mdb.min.js',
+//         ],
+//       },
+//     },
+//   })
+// );
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 const api = require('./api');
-app.use(helmet());
 app.use('/api', api);
 
 // // catch 404 and forward to error handler
